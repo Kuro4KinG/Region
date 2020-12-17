@@ -26,6 +26,13 @@ public class RegionRepository {
 
     }
 
-
+    public void delete(Long id) throws IOException {
+                List list = Files.lines(Paths.get("regions.txt")).collect(Collectors.toList());  // читаю строки в файле как List
+        String foundObj = list.stream().filter(line -> line.toString().startsWith(id.toString())) // нахожу в List нужную мне строку
+                .collect(Collectors.toList()).toString(); //   сохраняю как String
+        System.out.println(list); // вывожу до "удаления"
+        list.remove(foundObj);
+        System.out.println(list); // вывожу после "удаления"
+    }
 }
 
