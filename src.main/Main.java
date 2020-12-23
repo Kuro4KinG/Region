@@ -6,14 +6,25 @@ import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-//
-//        new RegionRepository().getAll();
-//        new RegionRepository().getById(1L);
-//        new RegionRepository().save(5L, "SomeRegion");
-     new RegionRepository().delete(2L);
+        System.out.println(new RegionRepository()
+                .getAll());
 
+        System.out.println(new RegionRepository()
+                .getById(1L));
+
+        Region r = new Region(null, "ARCTIC");
+        System.out.println(new RegionRepository()
+                .save(r));
+
+        Region region = new Region(6L, "ANTARCTIC");
+        System.out.println(new RegionRepository()
+                .update(region));
+
+        new RegionRepository()
+                .deleteById(2L);
 
 
     }
+
 
 }
