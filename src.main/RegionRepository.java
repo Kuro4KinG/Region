@@ -2,8 +2,6 @@ import java.io.*;
 import java.nio.file.*;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 
 public class RegionRepository {
     final String regions = "regions.txt";
@@ -19,7 +17,6 @@ public class RegionRepository {
         return getAll().stream().filter(line -> line.getId().equals(id))
                 .collect(Collectors.toList()).get(0);
     }
-
 
     public Region save(Region newRegion) throws IOException {
         List<Region> list = getAll();
