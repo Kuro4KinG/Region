@@ -10,11 +10,15 @@ public class Main {
         System.out.println(new RegionRepository()
                 .save(r));
 
-        Region region = new Region(6L, "ANTARCTIC");
+        Region region = new Region(6L, "ARCTIC");
         System.out.println(new RegionRepository()
                 .update(region));
 
         new RegionRepository()
                 .deleteById(2L);
+
+        System.out.println(new RegionRepository()
+                .getAll());
     }
+
 }

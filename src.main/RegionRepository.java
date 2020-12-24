@@ -9,8 +9,9 @@ public class RegionRepository {
     public List<Region> getAll() throws IOException {
         return getLines(regions).
                 stream().map(line -> List.of(line.split(". ")))
-                .map(line -> new Region(Long.parseLong(line.get(0)), line.get(1)))
+                .map(line -> regionFromLine(line))
                 .collect(Collectors.toList());
+
     }
 
     public Region getById(Long id) throws IOException {
@@ -20,19 +21,20 @@ public class RegionRepository {
 
     public Region save(Region newRegion) throws IOException {
         List<Region> list = getAll();
-        Long max = list.stream().map(line -> line.getId()).max(Long::compare).get();
-        newRegion = new Region(max + 1, newRegion.getName());
+        newRegion = new Region(generateID(list), newRegion.getName());
         list.add(newRegion);
         writeLines(regions, list);
         return newRegion;
     }
 
-    public Region update(Region updatedRegion) throws IOException {
+    public Region update(Region region) throws IOException {
         List<Region> list = getAll();
-        list.stream()
-                .filter(el -> el.getId().equals(updatedRegion.getId()))
-                .collect(Collectors.toList()).get(0)
-                .setName(updatedRegion.getName());
+
+        Region updatedRegion = list.stream()
+                .filter(el -> el.getId().equals(region.getId()))
+                .findFirst().get();
+        updatedRegion.setName(region.getName());
+
         writeLines(regions, list);
         return updatedRegion;
     }
@@ -54,6 +56,15 @@ public class RegionRepository {
                 .map(line -> line.toString())
                 .collect(Collectors.toList());
         Files.write(Paths.get(regions), newList);
+    }
+
+    private Region regionFromLine(List<String> line) {
+        return new Region(Long.parseLong(line.get(0)), line.get(1));
+    }
+
+    private Long generateID(List<Region> list) {
+        Long max = list.stream().map(line -> line.getId()).max(Long::compare).get() + 1;
+        return max;
     }
 }
 
